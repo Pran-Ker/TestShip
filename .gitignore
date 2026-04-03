@@ -1,0 +1,25 @@
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+
+# Fastlane (certs live in the separate match repo, not here)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# Secrets
+.env
+*.p12
+*.mobileprovision
+
+# macOS
+.DS_Store
+
+# Ruby
+.bundle/
+vendor/

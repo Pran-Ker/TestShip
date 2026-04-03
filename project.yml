@@ -1,0 +1,31 @@
+name: TestShip
+options:
+  bundleIdPrefix: com.YOURNAME         # CHANGE: e.g. com.pranker
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16"
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.10"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+
+targets:
+  TestShip:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - Sources/TestShip
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.YOURNAME.testship  # CHANGE to match bundleIdPrefix
+        INFOPLIST_FILE: Sources/TestShip/Info.plist
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: XXXXXXXXXX                       # CHANGE: your 10-char Team ID
+        PROVISIONING_PROFILE_SPECIFIER: match AppStore com.YOURNAME.testship
+    scheme:
+      testTargets:
+        - TestShipTests

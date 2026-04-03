@@ -1,0 +1,73 @@
+default_platform(:ios)
+
+BUNDLE_ID    = "com.YOURNAME.testship"   # CHANGE
+TEAM_ID      = "XXXXXXXXXX"              # CHANGE
+MATCH_REPO   = "git@github.com:YOURNAME/testship-certs.git"  # CHANGE: private repo for certs
+
+platform :ios do
+
+  # ── Run once to bootstrap signing certs & profiles ──────────────────────────
+  desc "Generate & store App Store certificates/profiles (run once)"
+  lane :setup_signing do
+    match(
+      type:           "appstore",
+      app_identifier: BUNDLE_ID,
+      team_id:        TEAM_ID,
+      git_url:        MATCH_REPO,
+      readonly:       false
+    )
+  end
+
+  # ── Build & upload to TestFlight ─────────────────────────────────────────────
+  desc "Build and ship to TestFlight"
+  lane :beta do
+    # Sync certs (read-only after initial setup)
+    match(
+      type:           "appstore",
+      app_identifier: BUNDLE_ID,
+      team_id:        TEAM_ID,
+      git_url:        MATCH_REPO,
+      readonly:       true
+    )
+
+    # Bump build number using latest TestFlight build
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+      xcodeproj:    "TestShip.xcodeproj"
+    )
+
+    # Build
+    build_app(
+      scheme:                      "TestShip",
+      export_method:               "app-store",
+      export_xcargs:               "-allowProvisioningUpdates",
+      include_bitcode:             false,
+      output_directory:            "./build",
+      output_name:                 "TestShip.ipa"
+    )
+
+    # Upload to TestFlight (no review submission)
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      distribute_external:               false
+    )
+
+    # Tag the release in git
+    add_git_tag(tag: "beta/#{lane_context[SharedValues::BUILD_NUMBER]}")
+    push_git_tags
+  end
+
+  # ── Register a new device (run when adding a tester's device) ───────────────
+  desc "Register a new test device"
+  lane :add_device do
+    device_name = UI.input("Device name (e.g. 'Pran iPhone 16'): ")
+    udid        = UI.input("UDID: ")
+    register_devices(
+      devices: { device_name => udid },
+      team_id: TEAM_ID
+    )
+    # Refresh profiles to include the new device
+    match(type: "development", force_for_new_devices: true, git_url: MATCH_REPO)
+  end
+
+end
