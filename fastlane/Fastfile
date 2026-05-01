@@ -2,7 +2,7 @@ default_platform(:ios)
 
 BUNDLE_ID   = "com.hebbarpran.testship"
 TEAM_ID     = "7M3BLC8QM2"
-MATCH_REPO  = "git@github.com:Pran-Ker/certs.git"
+MATCH_REPO  = "https://github.com/Pran-Ker/certs.git"
 
 def asc_api_key
   app_store_connect_api_key(
@@ -16,13 +16,14 @@ end
 
 platform :ios do
 
-  desc "Register App ID + create App Store Connect entry (run once per app)"
+  desc "Create App Store Connect entry (App ID already registered in dev portal)"
   lane :register do
+    asc_api_key
     produce(
-      api_key:        asc_api_key,
       app_identifier: BUNDLE_ID,
       app_name:       "TestShip",
       team_id:        TEAM_ID,
+      skip_devcenter: true,
       skip_itc:       false
     )
   end
@@ -63,6 +64,7 @@ platform :ios do
     build_app(
       scheme:           "TestShip",
       export_method:    "app-store",
+      xcargs:           'CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Distribution" DEVELOPMENT_TEAM=7M3BLC8QM2',
       output_directory: "./build",
       output_name:      "TestShip.ipa"
     )
