@@ -1,4 +1,4 @@
-app_identifier("com.YOURNAME.testship")   # CHANGE: your bundle ID
-apple_id("you@example.com")              # CHANGE: your Apple ID email
-team_id("XXXXXXXXXX")                    # CHANGE: your 10-char Team ID (developer.apple.com → Membership)
-itc_team_id("XXXXXXXXXX")               # CHANGE: App Store Connect team ID (same as team_id for individual accounts)
+app_identifier("com.hebbarpran.testship")
+apple_id("hebbarpran@gmail.com")
+team_id("7M3BLC8QM2")
+itc_team_id("7M3BLC8QM2")
