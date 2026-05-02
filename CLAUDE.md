@@ -45,7 +45,7 @@ bundle exec fastlane add_device
 - `Sources/TestShip/Info.plist` — manually maintained (not auto-generated). `CFBundleVersion` is bumped automatically by the `beta` lane via `agvtool`.
 - `fastlane/Fastfile` — four lanes: `register` (once per new app), `setup_signing` (once per machine), `beta` (every ship), `add_device`.
 - `fastlane/Appfile` — bundle ID, Apple ID, Team ID.
-- Signing certs and profiles are stored encrypted in `github.com/Pran-Ker/certs.git` (managed by `match`). Never commit certs here.
+- Signing certs and profiles are stored encrypted in a private certs repo (managed by `match`). Never commit certs here.
 
 ## Signing approach
 

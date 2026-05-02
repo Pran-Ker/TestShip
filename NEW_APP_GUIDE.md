@@ -20,7 +20,7 @@ Everything needed to go from zero to an app on your iPhone. Steps marked **once 
 ### 1. Register the App ID
 developer.apple.com → Certificates, IDs & Profiles → Identifiers → **+**
 - Type: App IDs → App
-- Bundle ID: Explicit → `com.hebbarpran.APPNAME`
+- Bundle ID: Explicit → `com.YOURNAME.APPNAME`
 - Capabilities: leave everything unchecked unless the app needs them
 
 ### 2. Create the app in App Store Connect
@@ -35,24 +35,24 @@ appstoreconnect.apple.com → Apps → **+** → New App
 cp -r ~/Developer/mobile-dev/TestShip ~/Developer/mobile-dev/APPNAME
 cd ~/Developer/mobile-dev/APPNAME
 rm -rf .git && git init && git add -A && git commit -m "Initial"
-gh repo create Pran-Ker/APPNAME --private --source=. --remote=origin --push
+gh repo create YOURGITHUB/APPNAME --private --source=. --remote=origin --push
 ```
 
 ### 4. Update identifiers
 In `project.yml`:
 ```yaml
-PRODUCT_BUNDLE_IDENTIFIER: com.hebbarpran.APPNAME
-PROVISIONING_PROFILE_SPECIFIER: match AppStore com.hebbarpran.APPNAME
+PRODUCT_BUNDLE_IDENTIFIER: com.YOURNAME.APPNAME
+PROVISIONING_PROFILE_SPECIFIER: match AppStore com.YOURNAME.APPNAME
 ```
 
 In `fastlane/Fastfile`:
 ```ruby
-BUNDLE_ID = "com.hebbarpran.APPNAME"
+BUNDLE_ID = "com.YOURNAME.APPNAME"
 ```
 
 In `fastlane/Appfile`:
 ```ruby
-app_identifier("com.hebbarpran.APPNAME")
+app_identifier("com.YOURNAME.APPNAME")
 ```
 
 ### 5. Update the app source
@@ -101,10 +101,10 @@ All stored in `~/.local/secrets`:
 
 | Variable | What it is |
 |----------|-----------|
-| `APPLE_ID` | hebbarpran@gmail.com |
-| `APPLE_TEAM_ID` | 7M3BLC8QM2 |
-| `ASC_KEY_ID` | 36756XHHXT |
-| `ASC_ISSUER_ID` | 5f3b3fe4-9116-474b-a0c8-9b98c6e63c70 |
-| `ASC_KEY_PATH` | ~/.local/AuthKey_36756XHHXT.p8 |
-| `MATCH_PASSWORD` | passphrase for the encrypted certs repo |
-| `MATCH_REPO` | https://github.com/Pran-Ker/certs.git |
+| `APPLE_ID` | your Apple ID email |
+| `APPLE_TEAM_ID` | 10-char Team ID from developer.apple.com → Membership |
+| `ASC_KEY_ID` | Key ID from the ASC API key you generated |
+| `ASC_ISSUER_ID` | Issuer ID shown on the same page |
+| `ASC_KEY_PATH` | path to the downloaded `.p8` file |
+| `MATCH_PASSWORD` | passphrase used to encrypt the certs repo |
+| `MATCH_REPO` | HTTPS URL of your private certs repo |
